@@ -1,0 +1,75 @@
+<!-- Ankimin by William Guy — a minimal template project for Anki v0.1
+Source code and updates: https://github.com/ctrlaltwill/Ankimin
+Ankimin is a fork and enhancement of the original Prettify Project by Deshai Pranav: https://github.com/pranavdeshai/anki-prettify
+-->
+
+<!--
+  To set the theme, add either 'light' or 'dark' to the class below:
+  Example: <div class="ankimin-flashcard light"> or <div class="ankimin-flashcard dark">
+-->
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+
+<div class="ankimin-flashcard card light ankipedia">
+  <div class="ankimin-deck">{{Deck}}</div>
+  <div class="ankimin-field ankimin-field--front">{{edit:cloze:Text}}{{tts en_AU voices=AwesomeTTS:cloze:Text}}</div>
+  <div class="ankimin-divider ankimin-divider--answer"></div>
+  {{#Back Extra}}
+  <div class="ankimin-field ankimin-field--back">{{Back Extra}}</div>
+  {{/Back Extra}} {{#Tags}}
+  <div class="ankimin-tags">{{clickable:Tags}}</div>
+  {{/Tags}}
+</div>
+
+<script>
+  // Set theme class on html element based on .card
+  (function() {
+    var card = document.querySelector('.card');
+    if (card && card.classList.contains('dark')) {
+      document.documentElement.classList.remove('light');
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
+    }
+  })();
+</script>
+
+<script>
+  // Split hierarchical tags
+  var tagsContainerEl = document.querySelectorAll(".ankimin-tags > *");
+  if (tagsContainerEl.length > 0) {
+    var tags = [];
+    tagsContainerEl.forEach((tagEl) => {
+      tagEl.classList.add("ankimin-tag");
+      tags.push(tagEl.innerHTML);
+      tags.forEach((tag) => {
+        var childTag = tag.split("::").filter(Boolean);
+        tagEl.innerHTML = childTag[childTag.length - 1].trim();
+      });
+    });
+  } else {
+    tagsContainerEl = document.querySelector(".ankimin-tags");
+    var tags = tagsContainerEl.innerHTML.split(" ").filter(Boolean);
+    var html = "";
+    tags.forEach((tag) => {
+      var childTag = tag.split("::").filter(Boolean);
+      html +=
+        "<span class='ankimin-tag'>" +
+        childTag[childTag.length - 1] +
+        "</span>";
+    });
+    tagsContainerEl.innerHTML = html;
+  }
+</script>
+
+<script>
+  // Breadcrumbs to current deck
+  var deckEl = document.querySelector(".ankimin-deck");
+  var subDecks = deckEl.innerHTML.split("::").filter(Boolean);
+  html = [];
+  subDecks.forEach((subDeck) => {
+    html.push("<span class='ankimin-subdeck'>" + subDeck + "</span>");
+  });
+  deckEl.innerHTML = html.join("&nbsp;/&nbsp;");
+</script>

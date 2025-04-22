@@ -41,10 +41,10 @@
      --tag-padding: 0.5em 1em;
      --tag-margin: 0 0.5em 0 0;
      --divider-margin: 2em;
-     --img-radius: 0em;
+     --img-radius: 0.5em;
      --img-min-width: 200px;
      --img-max-width: 500px;
-     --img-margin: 0.5em 0;
+     --img-margin: 2.5em 0em;
      --table-radius: 0.5em;
      --img-border: 0px solid var(--divider);
    }
@@ -132,8 +132,8 @@
      padding: 0.5em 0;
    }
    html:not(.mobile) .card {
-     padding: 0em;
-   }
+    padding: 10px 10px 35px 10px !important;
+  }
    .card::-webkit-scrollbar {
      display: none;
    }
@@ -153,7 +153,7 @@
      word-wrap: break-word;
      box-shadow: var(--box-shadow);
      border-radius: 10px;
-     padding: 0.5em !important;
+     padding: 0.5em;
    }
    .ankimin-flashcard ::selection {
      background-color: var(--text-bg-selected);
@@ -212,6 +212,7 @@
       -------------------------------------------------- */
    .ankimin-tags {
      margin: var(--deck-margin);
+     margin-bottom: 10px !important;
      display: flex;
      flex-flow: row wrap;
      font-size: var(--font-size-small);
@@ -400,7 +401,7 @@
 /* OCCLUSION CSS - DO NOT EDIT */
 #io-overlay {
   position: absolute;
-  margin-top: -9px;
+  margin-top: -2.5em;
   width: 100%;
   z-index: 3;
 }
