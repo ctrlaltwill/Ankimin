@@ -1,0 +1,459 @@
+/* ==================================================
+   Ankimin by William Guy — a minimal template project for Anki v0.1
+   Source code and updates: https://github.com/ctrlaltwill/Ankimin
+   Ankimin is a fork and enhancement of the original Prettify Project by Deshai Pranav
+   ================================================== */
+
+/* --------------------------------------------------
+   GLOBAL VARIABLES & PREFERENCES
+   -------------------------------------------------- */
+
+   html,
+   body {
+     padding: 0;
+     background-color: #f1f1f1; /* default light theme */
+   }
+   
+   /* When any child element has .dark class, change html/body background */
+   :has(.dark) html,
+   :has(.dark) body,
+   html:has(.dark),
+   body:has(.dark) {
+     background-color: #181b22;
+   }
+   
+   :root {
+     --card-max-width: 50em;
+     --card-text-align: left;
+     --font-size-regular: 16px;
+     --font-size-small: 12px;
+     --font-family: "DM Sans", "Proxima Nova", -apple-system, system-ui, BlinkMacSystemFont, Segoe UI,
+       Roboto, Helvetica, Arial, sans-serif;
+     --img-width:100%;
+     --img-brightness: 0.75;
+     --img-filter: none;
+     --deck-margin: 30px;
+     --deck-font-size: 10px;
+     --deck-font-weight: 400;
+     --tag-font-size: 10px;
+     --tag-font-weight: 400;
+     --tag-radius: 0.2em;
+     --tag-padding: 0.5em 1em;
+     --tag-margin: 0 0.5em 0 0;
+     --divider-margin: 2em;
+     --img-radius: 0em;
+     --img-min-width: 200px;
+     --img-max-width: 500px;
+     --img-margin: 0.5em 0;
+     --table-radius: 0.5em;
+     --img-border: 0px solid var(--divider);
+   }
+   
+   /* 
+     To use Noto Sans from Google Fonts, add the following <link> to your HTML <head>:
+   
+     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+   
+     This will load Noto Sans with regular, bold, italic, and bold italic styles.
+   */
+   
+   /* 
+     To use DM Sans from Google Fonts, add the following <link> to your HTML <head>:
+   
+     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+   
+     This will load DM Sans with regular and bold styles.
+   */
+   
+   /* --------------------------------------------------
+      THEME: LIGHT
+      -------------------------------------------------- */
+   .light, .card.light {
+     --text-fg: #555;
+     --box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+     --text-fg-faint: #333333cc;
+     --text-bg-selected: #ffffff;
+     --card-bg: #ffffff;
+     --card-border: #ffffff;
+     --divider: #aaa;
+     --tag-fg: #333333cc;
+     --tag-bg: #f2f2f2;
+     --tag-fg-active: #333333;
+     --tag-bg-active: #eeeeee;
+     --tag-border: transparent;
+     --cloze-fg: #0db5be;
+     --cloze-bg: transparent;
+     --link-fg: #0db5be;
+     --link-bg: transparent;
+     --link-fg-active: #0db5be;
+     --link-bg-active: transparent;
+     --bold-fg: var(--text-fg);
+     --italic-fg: var(--text-fg);
+     --bold-italic-fg: var(--text-fg);
+     --underline-fg: var(--text-fg);
+     --deck-color: #999999;
+   }
+   
+   /* --------------------------------------------------
+      THEME: DARK
+      -------------------------------------------------- */
+   .dark, .card.dark {
+     --text-fg: #fff;
+     --box-shadow: rgba(0, 0, 0, 0.35) 0px 8px 24px;
+     --text-fg-faint: #fff;
+     --text-bg-selected: #2d3748;
+     --card-bg: #23272e;
+     --card-border: #2d3748;
+     --divider: #444;
+     --tag-fg: #e0e0e0;
+     --tag-bg: #333;
+     --tag-fg-active: #fff;
+     --tag-bg-active: #444;
+     --tag-border: transparent;
+     --cloze-fg: #0db5be;
+     --cloze-bg: transparent;
+     --link-fg: #0db5be;
+     --link-bg: transparent;
+     --link-fg-active: #0db5be;
+     --link-bg-active: transparent;
+     --bold-fg: var(--text-fg);
+     --italic-fg: var(--text-fg);
+     --bold-italic-fg: var(--text-fg);
+     --underline-fg: var(--text-fg);
+     --deck-color: #eee;
+   }
+   
+   /* --------------------------------------------------
+      CARD CONTAINER
+      -------------------------------------------------- */
+   .card {
+     letter-spacing: 0.1px;
+     cursor: default;
+     padding: 0.5em 0;
+   }
+   html:not(.mobile) .card {
+     padding: 0em;
+   }
+   .card::-webkit-scrollbar {
+     display: none;
+   }
+   
+   /* --------------------------------------------------
+      FLASHCARD LAYOUT
+      -------------------------------------------------- */
+   .ankimin-flashcard {
+     background-color: var(--card-bg);
+     color: var(--text-fg);
+     font-family: var(--font-family);
+     font-size: var(--font-size-regular);
+     line-height: 1.75;
+     margin: 0 auto;
+     max-width: var(--card-max-width);
+     text-align: var(--card-text-align);
+     word-wrap: break-word;
+     box-shadow: var(--box-shadow);
+     border-radius: 10px;
+     padding: 0.5em !important;
+   }
+   .ankimin-flashcard ::selection {
+     background-color: var(--text-bg-selected);
+   }
+   
+   /* --------------------------------------------------
+      FIELDS
+      -------------------------------------------------- */
+   .ankimin-field {
+     margin-left: var(--deck-margin);
+     margin-right: var(--deck-margin);
+     font-weight: 400;
+   }
+   .mobile .ankimin-field {
+     margin: 1em;
+   }
+   .ankimin-field--back {
+     color: var(--text-fg-faint);
+     font-size: var(--font-size-small);
+   }
+   
+   /* --------------------------------------------------
+      CLOZE DELETIONS
+      -------------------------------------------------- */
+   .cloze {
+     background-color: var(--cloze-bg);
+     color: var(--cloze-fg);
+     font-weight: 600;
+   }
+   
+   /* --------------------------------------------------
+      DECK BREADCRUMBS
+      -------------------------------------------------- */
+   .ankimin-deck {
+     margin-top: var(--deck-margin);
+     margin-left: var(--deck-margin);
+     margin-bottom: 30px;
+     display: flex;
+     font-size: var(--deck-font-size);
+     font-weight: var(--deck-font-weight);
+     color: var(--deck-color);
+     white-space: nowrap;
+   }
+   .mobile .ankimin-deck {
+     margin: 1em;
+   }
+   .ankimin-subdeck {
+     text-overflow: ellipsis;
+     overflow: hidden;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+   }
+   
+   /* --------------------------------------------------
+      TAGS
+      -------------------------------------------------- */
+   .ankimin-tags {
+     margin: var(--deck-margin);
+     display: flex;
+     flex-flow: row wrap;
+     font-size: var(--font-size-small);
+   }
+   .mobile .ankimin-tags {
+     margin: 1em;
+   }
+   .ankimin-tag {
+     all: initial;
+     background-color: var(--tag-bg);
+     border-radius: var(--tag-radius);
+     color: var(--tag-fg);
+     display: inline;
+     font-size: var(--tag-font-size);
+     font-family: var(--font-family);
+     font-weight: var(--tag-font-weight);
+     margin: var(--tag-margin);
+     padding: var(--tag-padding);
+     transition: all 0.25s;
+     border-radius: 3px;
+     word-break: break-word;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+   }
+   .ankimin-tag:hover {
+     background-color: var(--tag-bg-active);
+     color: var(--tag-fg-active);
+     cursor: pointer;
+   }
+   
+   /* --------------------------------------------------
+      DIVIDERS
+      -------------------------------------------------- */
+   .ankimin-divider {
+     background-color: transparent;
+     border: none;
+     border-bottom: 0.5px solid var(--divider);
+     padding: 0;
+   }
+   .ankimin-divider--answer {
+     margin: var(--divider-margin);
+   }
+   
+   /* --------------------------------------------------
+      IMAGES
+      -------------------------------------------------- */
+   img {
+     border-radius: var(--img-radius);
+     display: block;
+     margin: var(--img-margin);
+     width: var(--img-width);
+     min-width: var(--img-min-width);
+     max-width: var(--img-max-width);
+     transition: 0.25s ease-in-out all;
+     border: var(--img-border);
+   }
+   .night_mode img {
+     filter: var(--img-filter);
+     opacity: var(--img-brightness);
+   }
+   img + br {
+     display: none;
+   }
+   
+   /* --------------------------------------------------
+      TABLES
+      -------------------------------------------------- */
+   table {
+     border-collapse: separate;
+     border-spacing: 0;
+     margin: 0 auto;
+     max-width: 100%;
+   }
+   table thead {
+     background-color: var(--card-border);
+   }
+   table tr:nth-of-type(even) {
+     background-color: var(--card-border);
+   }
+   table tr:first-child th:first-child {
+     border-top-left-radius: var(--table-radius);
+   }
+   table tr:first-child th:last-child {
+     border-top-right-radius: var(--table-radius);
+   }
+   table tr:last-child td:first-child {
+     border-bottom-left-radius: var(--table-radius);
+   }
+   table tr:last-child td:last-child {
+     border-bottom-right-radius: var(--table-radius);
+   }
+   table th {
+     border-bottom: solid 1px var(--text-bg-selected);
+     border-left: solid 1px var(--text-bg-selected);
+     border-top: solid 1px var(--text-bg-selected);
+     padding: 0.5em;
+   }
+   table th:last-child {
+     border-right: solid 1px var(--text-bg-selected);
+   }
+   table td {
+     border-bottom: solid 1px var(--text-bg-selected);
+     border-left: solid 1px var(--text-bg-selected);
+     padding: 0.5em;
+   }
+   table td:last-of-type {
+     border-right: solid 1px var(--text-bg-selected);
+   }
+   
+   /* --------------------------------------------------
+      HYPERLINKS
+      -------------------------------------------------- */
+   a, a:visited {
+     text-decoration: none;
+     color: var(--link-fg);
+   }
+   a:hover, a:active {
+     text-decoration: underline;
+     color: var(--link-fg-active);
+   }
+   
+   /* --------------------------------------------------
+      FORMATTING
+      -------------------------------------------------- */
+   b {
+     color: var(--bold-fg);
+   }
+   i {
+     color: var(--italic-fg);
+   }
+   b > i,
+   i > b {
+     color: var(--bold-italic-fg);
+   }
+   u {
+     color: var(--underline-fg);
+   }
+   pre {
+     white-space: normal;
+   }
+   
+   /* --------------------------------------------------
+      CUSTOM FONTS
+      -------------------------------------------------- */
+   /* 
+   @font-face {
+     font-family: Inter;
+     src: local("Inter-Regular"), url("_Inter-Regular.woff2") format("woff2");
+     font-style: normal;
+     font-weight: normal;
+   }
+   @font-face {
+     font-family: Inter;
+     src: local("Inter-Bold"), url("_Inter-Bold.woff2") format("woff2");
+     font-style: normal;
+     font-weight: bold;
+   }
+   @font-face {
+     font-family: Inter;
+     src: local("Inter-Italic"), url("_Inter-Italic.woff2") format("woff2");
+     font-style: italic;
+     font-weight: normal;
+   }
+   @font-face {
+     font-family: Inter;
+     src: local("Inter-BoldItalic"), url("_Inter-BoldItalic.woff2") format("woff2");
+     font-style: italic;
+     font-weight: bold;
+   }
+   */
+   
+   /* --------------------------------------------------
+      MISCELLANEOUS
+      -------------------------------------------------- */
+   .replay-button svg {
+     display: none;
+   }
+   .replay-button:before {
+     display: none;
+   }
+   ::selection {
+     color: #fff;
+     background: #0fcad4 !important;
+   }
+
+/* OCCLUSION CSS - DO NOT EDIT */
+#io-overlay {
+  position: absolute;
+  margin-top: -9px;
+  width: 100%;
+  z-index: 3;
+}
+
+#io-original {
+  position: relative;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+  visibility: hidden;
+}
+
+#io-wrapper {
+  position: relative;
+  width: 80%;
+  margin: 0 auto;
+}
+
+/* IO Elements Styling */
+#io-header {
+  font-size: 1.1em;
+  margin-bottom: 0.2em;
+  color: var(--text-fg);
+}
+
+#io-footer {
+  max-width: 80%;
+  margin: 0.8em auto 0;
+  font-style: italic;
+  color: var(--text-fg-faint);
+}
+
+#io-revl-btn {
+  all: initial;
+  background-color: var(--cloze-fg);
+  border-radius: 3px;
+  color: #fff;
+  font-size: var(--tag-font-size);
+  font-family: var(--font-family);
+  font-weight: var(--tag-font-weight);
+  padding: var(--tag-padding);
+  margin: 0 2em 0 10px;
+  transition: all 0.25s;
+  float: right;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+#io-revl-btn:hover {
+  opacity: 0.9;
+}
+
+#io-revl-btn:active {
+  opacity: 0.8;
+}
