@@ -12,15 +12,14 @@ Ankimin is a fork and enhancement of the original Prettify Project by Deshai Pra
 
 <div class="ankimin-flashcard card light ankipedia">
   <div class="ankimin-deck">{{Deck}}</div>
-  <div class="ankimin-field ankimin-field--front">{{edit:cloze:Text}}{{tts en_AU voices=AwesomeTTS:cloze:Text}}</div>
+  <div class="ankimin-field ankimin-field--front">{{Front}}</div>
   <div class="ankimin-divider ankimin-divider--answer"></div>
-  {{#Back Extra}}
-  <div class="ankimin-field ankimin-field--back">{{Back Extra}}</div>
-  {{/Back Extra}} {{#Tags}}
+  {{#Back}}
+  <div class="ankimin-field ankimin-field--back">{{Back}}</div>
+  {{/Back}} {{#Tags}}
   <div class="ankimin-tags">{{clickable:Tags}}</div>
   {{/Tags}}
 </div>
-
 <script>
   // Set theme class on html element based on .card
   (function() {
@@ -38,6 +37,8 @@ Ankimin is a fork and enhancement of the original Prettify Project by Deshai Pra
 <script>
   // Split hierarchical tags
   var tagsContainerEl = document.querySelectorAll(".ankimin-tags > *");
+  var tagsContainer = document.querySelector(".ankimin-tags");
+  
   if (tagsContainerEl.length > 0) {
     var tags = [];
     tagsContainerEl.forEach((tagEl) => {
@@ -49,19 +50,22 @@ Ankimin is a fork and enhancement of the original Prettify Project by Deshai Pra
       });
     });
   } else {
-    tagsContainerEl = document.querySelector(".ankimin-tags");
-    var tags = tagsContainerEl.innerHTML.split(" ").filter(Boolean);
+    var tags = tagsContainer.innerHTML.split(" ").filter(Boolean);
     var html = "";
-    tags.forEach((tag) => {
-      var childTag = tag.split("::").filter(Boolean);
-      html +=
-        "<span class='ankimin-tag'>" +
-        childTag[childTag.length - 1] +
-        "</span>";
-    });
-    tagsContainerEl.innerHTML = html;
+    
+    if (tags.length === 0 || (tags.length === 1 && tags[0].trim() === "")) {
+      html = "<span class='ankimin-tag untagged'>Untagged</span>";
+    } else {
+      tags.forEach((tag) => {
+        var childTag = tag.split("::").filter(Boolean);
+        html += "<span class='ankimin-tag'>" + childTag[childTag.length - 1] + "</span>";
+      });
+    }
+    
+    tagsContainer.innerHTML = html;
   }
 </script>
+
 
 <script>
   // Breadcrumbs to current deck
