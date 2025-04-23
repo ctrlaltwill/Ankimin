@@ -4,6 +4,8 @@
 
 There are currently three templates, for Basic, Cloze and Image Occlusion cards. They are designed with light and dark theme options, and work well with other plugins, including [Ankipedia](https://github.com/ctrlaltwill/ankipedia) and Image Occlusion Enhanced.
 
+The project plan is currently to repackage these into an Anki addon, with fully-customisable config settings and auto light/dark settings.
+
 Here is an example of a vanilla Ankimin card (with Ankipedia running concurrently):
 
 ![Ankimin Basic Card](https://github.com/ctrlaltwill/Ankimin/blob/main/Demo%20Images/Basic-Preview-Back-Plus-Ankipedia.png)
